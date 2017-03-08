@@ -34,17 +34,26 @@ void runMotor(tMotor myMotor, int speed, int time){
 	motor[myMotor]=currentSpeed;
 
 }
-void classifyMarble(){
-		int marbleLightValues[5]; //some number values for the light sensor to be filled in
-		marbleLightValues[0]=0;
-		marbleLightValues[1]=1;
-		marbleLightValues[2]=2;
-		marbleLightValues[3]=3;
-		marbleLightValues[4]=4;
+int classifyMarble(int senseVal){
+		int marbleLightValues[3]; //You should test your own values. These numbers worked for OUR machine, but it might not for yours
+		marbleLightValues[0]=38; //Clear marble
+		marbleLightValues[1]=775; //Metal
+		marbleLightValues[2]=978; //Black
+		for (int k=0; k<=2; k++){
+			if (senseVal>marbleLightValues[k]-100 && senseVal<marbleLightValues[k]+100){
+				return k;
+			}
+	}
+
+		return 3; //No match
 }
 
 task main()
 {
-	runMotor(dispenseWheel, 63, 500);  //not sure speed and time, this will have to be tested and changed
-
+	motor[flashlight]=127;
+	wait1Msec(1000);
+	//runMotor(dispenseWheel, 63, 500);  //not sure speed and time, this will have to be tested and changed
+	int marbleTest=classifyMarble(SensorValue[lightSensorOne]);
+	writeDebugStreamLine("Int marbleTest is : %d", marbleTest);
+	wait1Msec(10000);
 }
