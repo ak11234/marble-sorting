@@ -8,6 +8,7 @@
 #pragma config(Sensor, dgtl12, green,          sensorLEDtoVCC)
 #pragma config(Motor,  port1,           flashlight,    tmotorVexFlashlight, openLoop, reversed)
 #pragma config(Motor,  port2,           rightMotor,    tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port5,           metalClearGate, tmotorServoStandard, openLoop)
 #pragma config(Motor,  port6,           lightGate,     tmotorServoStandard, openLoop)
 #pragma config(Motor,  port7,           forkRight,     tmotorServoStandard, openLoop)
 #pragma config(Motor,  port8,           forkLeft,      tmotorServoStandard, openLoop)
@@ -65,6 +66,7 @@ task main()
 			motor[forkRight]=63; //Test values later
 			motor[forkLeft]=63; //Test values later
 			motor[lightGate]=-63;
+			//Marble is now going down the ramp to bounce into container. Job done.
 		}
 		else if(classifyMarble(SensorValue[lightSensorOne]==3)){
 			//Hopefully this doesn't happen. If it does, we are in trouble
@@ -73,12 +75,16 @@ task main()
 		else if(classifyMarble(SensorValue[lightSensorOne]==1)){ //Then, must be metal
 			motor[forkRight]=-63;
 			motor[forkLeft]=-63;
+			motor[metalClearGate]=-63; //Figure out all values for these
 			motor[lightGate]=-63;
+			//Marble is directed towards left side of fork, then to side of fork designated for metal marbles, and ramp leads into container. Job done.
 		}
 		else if(classifyMarble(SensorValue[lightSensorOne]==0)){ //Then, must be clear
 			motor[forkRight]=-63;
 			motor[forkLeft]=-63;
+			motor[metalClearGate]=63; //Figure out all values for these.
 			motor[lightGate]=-63;
+			//Marble is directed towards left side of fork, then to side of fork designated for clear marbles, and ramp leads into container. Job done.
 		}
 
 	}
