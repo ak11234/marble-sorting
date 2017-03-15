@@ -18,6 +18,7 @@
 
 /*
 Group members: Jordy Mazza, Noah Canel, Adam Kalman
+@author: Adam Kalman
 Pseudocode:
 Release one marble at a time
 Use first light sensor to determine if marble is the black, rubber marble
@@ -55,6 +56,10 @@ int classifyMarble(int senseVal){
 
 task main()
 {
+	int fRightToLeft=10;
+	int fRightToRight=-50;
+	int fLeftToLeft=-20;
+	int fLeftToRight=60;
 	int marblesRemaining=16; //How many are there?
 	int marbleTest;
 	motor[flashlight]=127; //This should always be on
@@ -62,26 +67,27 @@ task main()
 	while (marblesRemaining>0){
 		motor[lightGate]=0;
 		runMotor(dispenseWheel, 127, 1000);  //not sure speed and time, this will have to be tested and changed
-		if(classifyMarble(SensorValue[lightSensorOne]==2)){ //If it is a black marble, direct right
-			motor[forkRight]=63; //Test values later
+		int x=classifyMarble(SensorValue[lightSensorOne]);
+		if(x==2){ //If it is a black marble, direct right
+			motor[forkRight]=-20; //Test values later
 			motor[forkLeft]=63; //Test values later
 			motor[lightGate]=-63;
 			//Marble is now going down the ramp to bounce into container. Job done.
 		}
-		else if(classifyMarble(SensorValue[lightSensorOne]==3)){
+		else if(x==3){
 			//Hopefully this doesn't happen. If it does, we are in trouble
 			break;
 		}
-		else if(classifyMarble(SensorValue[lightSensorOne]==1)){ //Then, must be metal
-			motor[forkRight]=-63;
-			motor[forkLeft]=-63;
+		else if(x==1){ //Then, must be metal
+			motor[forkRight]=fRightToRight;
+			motor[forkLeft]=fLeftToRight;
 			motor[metalClearGate]=-63; //Figure out all values for these
 			motor[lightGate]=-63;
 			//Marble is directed towards left side of fork, then to side of fork designated for metal marbles, and ramp leads into container. Job done.
 		}
-		else if(classifyMarble(SensorValue[lightSensorOne]==0)){ //Then, must be clear
-			motor[forkRight]=-63;
-			motor[forkLeft]=-63;
+		else if(x==0){ //Then, must be clear
+			motor[forkRight]=fRightToLeft;
+			motor[forkLeft]=fLeftToLeft;
 			motor[metalClearGate]=63; //Figure out all values for these.
 			motor[lightGate]=-63;
 			//Marble is directed towards left side of fork, then to side of fork designated for clear marbles, and ramp leads into container. Job done.
