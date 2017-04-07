@@ -40,19 +40,34 @@ void runMotor(tMotor myMotor, int speed, int time){
 
 }
 int classifyMarble(int senseVal){
+	if (senseVal<100){
+		return 0;
+	}
+	if (senseVal>200 && senseVal<815){
+		return 2;
+	}
+	if (senseVal>816){
+		return 1;
+	}
+	else {
+		return 3;
+	}
+}
+/*
 	int marbleLightValues[3]; //You should test your own values. These numbers worked for OUR machine, but it might not for yours
 	marbleLightValues[0]=36; //Clear marble
-	marbleLightValues[1]=815; //Metal
-	marbleLightValues[2]=745; //Black
+	marbleLightValues[1]=400; //Metal 410 -840
+	marbleLightValues[2]=650; //Black 560 360 -800
 	for (int k=0; k<=2; k++){
-		if (senseVal>marbleLightValues[k]-30 && senseVal<marbleLightValues[k]+30){
+		if (senseVal>marbleLightValues[k]-75 && senseVal<marbleLightValues[k]+75){
 			return k;
 		}
 	}
 
 	return 3; //No match
-}
 
+}
+*/
 task main()
 {
 	int fRightToLeft=10;
@@ -94,12 +109,13 @@ task main()
 			//Marble is directed towards left side of fork, then to side of fork designated for metal marbles, and ramp leads into container. Job done.
 		}
 		else if(x==0 || x==3){ //Then, must be clear
-			motor[forkRight]=fRightToLeft;
-			motor[forkLeft]=fLeftToLeft;
+			motor[forkRight]=fRightToRight;
+			motor[forkLeft]=fLeftToRight;
 			motor[metalClearGate]=fClear; //Figure out all values for these.
 			motor[lightGate]=gateOpen;
 			//Marble is directed towards left side of fork, then to side of fork designated for clear marbles, and ramp leads into container. Job done.
 		}
+		wait1Msec(2000);
 
 	}
 }
