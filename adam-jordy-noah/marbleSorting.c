@@ -27,17 +27,6 @@ If at inital sorting area, and it is a black marble, then send to ramp where it 
 Based on bounce of marble, it falls into apporpriate bin.
 */
 
-void runMotor(tMotor myMotor, int speed, int time){
-	/*
-	Function to run a motor.
-	Takes a motor, a integer of speed, and integer of time as parameters
-	*/
-	int currentSpeed=motor[myMotor];
-	motor[myMotor]=speed;
-	wait1Msec(time);
-	motor[myMotor]=currentSpeed;
-
-}
 int classifyMarble(int senseVal){
 	if (senseVal<100){
 		return 0;
@@ -47,44 +36,18 @@ int classifyMarble(int senseVal){
 	}
 }
 
-/*
-	int marbleLightValues[3]; //You should test your own values. These numbers worked for OUR machine, but it might not for yours
-	marbleLightValues[0]=36; //Clear marble
-	marbleLightValues[1]=400; //Metal 410 -840
-	marbleLightValues[2]=650; //Black 560 360 -800
-	for (int k=0; k<=2; k++){
-		if (senseVal>marbleLightValues[k]-75 && senseVal<marbleLightValues[k]+75){
-			return k;
-		}
-	}
-
-	return 3; //No match
-
-}
-*/
 task main()
 {
-	int fRightToLeft=10;
-	int fRightToRight=-50;
-	int fLeftToLeft=30;
-	int fLeftToRight=-20;
 	int fMetal=-20;
 	int fClear=40;
 	int gateOpen=63;
 	int gateClose=-30;
-	int despenserClose=0
-	int despenserOpen=20
+	int despenserClose=0;
+	int despenserOpen=40;
 	int marblesRemaining=30; //How many are there?
 	motor[flashlight]=127; //This should always be on
-	//wait1Msec(1000); //Make sure it came on before using sensor values
 	while (marblesRemaining>0){
 		motor[lightGate]=gateClose;
-		/*
-		motor[dispenseWheel]=20;
-		wait1Msec(750);
-		motor[dispenseWheel]=0;
-		wait1Msec(2000);
-		*/
 		motor[dispenseGate]=despenserOpen;
 		wait1Msec(500);
 		motor[dispenseGate]=despenserClose;
